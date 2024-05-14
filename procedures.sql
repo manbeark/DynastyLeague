@@ -1,3 +1,5 @@
+-- Create procedure for adding a new team
+-- Will need the following: location, name, and abbreviation
 CREATE OR ALTER PROCEDURE dbo.AddTeam
  @Team_Location varchar(100)
 ,@Team_Name varchar(100)
@@ -9,6 +11,8 @@ INSERT INTO dbo.Teams (Team_Location, Team_Name, Team_Abbreviation, OwnerId)
 VALUES (@Team_Location, @Team_Name, @Team_Abbreviation, @OwnerId)
 END;
 
+-- Create procedure for adding a new owner
+-- Will need the following: first name, last name, and email
 CREATE OR ALTER PROCEDURE dbo.AddOwner
  @Owner_FirstName varchar(100)
 ,@Owner_LastName varchar(100)
@@ -19,6 +23,8 @@ INSERT INTO dbo.Owners (Owner_FirstName, Owner_LastName, Owner_Email)
 VALUES (@Owner_FirstName, @Owner_LastName, @Owner_Email)
 END;
 
+-- Create procedure for adding a new contract
+-- Will need the following: contract type, team that owns the contract, player who is the target of the contract, and the contract values for each year
 CREATE OR ALTER PROCEDURE dbo.NewContract
  @ContractTypeId INTEGER
 ,@TeamId INTEGER
