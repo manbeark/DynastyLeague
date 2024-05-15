@@ -1,3 +1,8 @@
+-- This script creates all the action triggers for changes made to tables in order to record them in their respective history tables.
+
+-- Create Teams_Update
+-- This trigger records updates to the teams table.
+
 CREATE TRIGGER Teams_Update AFTER UPDATE ON dbo.Teams
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -17,6 +22,7 @@ FOR EACH ROW BEGIN
 	,'u'
 	,@UPDATETIME
 END;
+-- Create teams insert trigger
 CREATE TRIGGER Teams_Insert AFTER INSERT ON dbo.Teams
 FOR EACH ROW BEGIN
 	INSERT INTO dbo.TeamsHist (TeamId, Team_Location, Team_Name, Team_Abbreviation, OwnerId, ActionCode, ActionDate)
@@ -29,6 +35,7 @@ FOR EACH ROW BEGIN
 	,'i'
 	,NOW()
 END;
+-- Create teams delete trigger
 CREATE TRIGGER Teams_Delete AFTER DELETE ON dbo.Teams
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -48,7 +55,7 @@ FOR EACH ROW BEGIN
 	,'d'
 	,NOW()
 END;
-
+--Create owners update trigger
 CREATE TRIGGER Owners_Update AFTER UPDATE ON dbo.Owners
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -68,6 +75,7 @@ FOR EACH ROW BEGIN
 	,@UPDATETIME
 	
 END;
+-- Create owners insert trigger
 CREATE TRIGGER Owners_Insert AFTER UPDATE ON dbo.Owners
 FOR EACH ROW BEGIN
 	INSERT INTO dbo.OwnersHist (OwnerId, Owner_FirstName, Owner_LastName, Owner_Email, ActionCode, ActionDate)
@@ -79,7 +87,7 @@ FOR EACH ROW BEGIN
 	,'i'
 	,NOW()
 END;
-
+-- Create owners delete trigger
 CREATE TRIGGER Owners_Delete AFTER DELETE ON dbo.Owners
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME datetime = NOW()
@@ -98,7 +106,7 @@ FOR EACH ROW BEGIN
 	,'d'
 	,@UPDATETIME
 END;
-
+-- Create contract type insert trigger
 CREATE TRIGGER ContractType_Insert AFTER INSERT ON dbo.ContractType
 FOR EACH ROW BEGIN
 	INSERT INTO ContractTypeHist (ContractTypeId, Title, Description, ActiveFlg, ActionCode, ActionDate)
@@ -110,7 +118,7 @@ FOR EACH ROW BEGIN
 	,'i'
 	,NOW()
 END;
-
+-- create contract type update trigger
 CREATE TRIGGER ContractType_Update AFTER UPDATE ON dbo.ContractType
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -129,7 +137,7 @@ FOR EACH ROW BEGIN
 	,'u'
 	,@UPDATETIME
 END;
-
+-- create contract type delete trigger
 CREATE TRIGGER ContractType_Delete AFTER DELETE ON dbo.ContractType
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -148,7 +156,7 @@ FOR EACH ROW BEGIN
 	,'d'
 	,@UPDATETIME
 END;
-
+-- create contract insert trigger
 CREATE TRIGGER Contract_Insert AFTER INSERT ON dbo.Contract
 FOR EACH ROW BEGIN
 	INSERT INTO dbo.ContractHist (ContractId, ContractTypeId, TeamId, PlayerId, Year1Value, Year2Value, Year3Value, Year4Value, ActionCode, ActionDate)
@@ -164,7 +172,7 @@ FOR EACH ROW BEGIN
 	,'i'
 	,NOW()
 END;
-
+-- create contract update trigger
 CREATE TRIGGER Contract_Update AFTER UPDATE ON dbo.Contract
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -186,7 +194,7 @@ FOR EACH ROW BEGIN
 	,'u'
 	,@UPDATETIME
 END;
-
+-- create contract delete trigger
 CREATE TRIGGER Contract_Delete AFTER DELETE ON dbo.Contract
 FOR EACH ROW BEGIN 
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -207,7 +215,7 @@ FOR EACH ROW BEGIN
 	,'d'
 	,@UPDATETIME
 END;
-
+-- create draft picks insert trigger
 CREATE TRIGGER DraftPicks_Insert AFTER INSERT ON dbo.DraftPicks
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -222,7 +230,7 @@ FOR EACH ROW BEGIN
 	,'i'
 	,@UPDATETIME
 END;
-
+-- create draft picks update trigger
 CREATE TRIGGER DraftPicks_Update AFTER UPDATE ON dbo.DraftPicks
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
@@ -242,7 +250,7 @@ FOR EACH ROW BEGIN
 	,'u'
 	,@UPDATETIME
 END;
-
+-- create draft picks delete trigger
 CREATE TRIGGER DraftPicks_Delete AFTER DELETE ON dbo.DraftPicks
 FOR EACH ROW BEGIN
 	DECLARE @UPDATETIME DATETIME = NOW()
