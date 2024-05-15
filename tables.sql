@@ -1,3 +1,7 @@
+-- Create teams table. 
+-- Each team is required to have a location, name, and abbreviation. 
+-- The owner of the team has a foreign key relationship to the owners table.
+
 CREATE TABLE dbo.Teams
 (
  TeamId INTEGER PRIMARY KEY NOT NULL
@@ -7,6 +11,12 @@ CREATE TABLE dbo.Teams
 ,OwnerId INTEGER
 ,FOREIGN KEY (OwnerId) REFERENCES dbo.Owners(OwnerId)
 );
+
+-- Create team history table
+-- This will store all actions on the teams table. 
+-- Each action is accompanied with an ActionDate and ValidUntilDate
+-- This is to allow the user to view what the table looked like at any given point in time. 
+-- This is recurring pattern for each history table and will not be mentioned again. 
 
 CREATE TABLE dbo.TeamsHist
 (
@@ -21,6 +31,10 @@ CREATE TABLE dbo.TeamsHist
  ,ValidUntilDate datetime
 );
 
+-- Create owners table. 
+-- Each owner is required to have a first name, last name, and email address. 
+-- There is a constraint on the email address to force the value to at least appear to be an email address.
+
 CREATE TABLE dbo.Owners
 (
  OwnerId INTEGER PRIMARY KEY NOT NULL
@@ -29,6 +43,8 @@ CREATE TABLE dbo.Owners
 ,Owner_Email varchar(1000) NOT NULL
 ,CONSTRAINT EmailAddress CHECK Owner_Email LIKE '%@%.%'
 );
+
+-- Create owner history table
 
 CREATE TABLE dbo.OwnersHist
 (
@@ -42,6 +58,10 @@ CREATE TABLE dbo.OwnersHist
 ,ValidUntilDate DATETIME
 );
 
+-- Create contract type table
+-- This will be a relatively static table unless new contract types are introduced by the league.
+-- Each contract type needs a title, description, and will default to inactive unless otherwise marked. 
+
 CREATE TABLE ContractType 
 (
 ContractTypeId INTEGER PRIMARY KEY NOT NULL
@@ -49,6 +69,8 @@ ContractTypeId INTEGER PRIMARY KEY NOT NULL
 ,Description varchar(1000) NOT NULL
 ,ActiveFlg bit DEFAULT 0 NOT NULL
 );
+
+-- Create contract type history table
 
 CREATE TABLE ContractTypeHist
 (
@@ -61,6 +83,12 @@ ContractTypeHistId INTEGER PRIMARY KEY NOT NULL
 ,ActionDate DATETIME NOT NULL
 ,ValidUntilDate DATETIME
 );
+
+-- Create contract table
+-- This table houses all the contracts for the league.
+-- Each contract needs a contract type, the team that owns it, the player who is the target of the contract, and at least a year 1 value.
+-- Contracts are limited to 0.5 increments for the values in a given year.
+-- Contracts have foreign key relationships to the teams, contract type, and player tables. 
 
 CREATE TABLE dbo.Contract
 (
@@ -81,6 +109,9 @@ ContractId INTEGER PRIMARY KEY NOT NULL
 ,CONSTRAINT Year4Value CHECK (Year4Value - ROUND(Year4Value) = 0.5 OR Year4Value - ROUND(Year4Value) = 0)
 )
 
+-- Create contract history table.
+-- This table is especially important because it allows us to view what teams look like week to week. 
+ 
 CREATE TABLE dbo.ContractHist 
 (
 ContractHistId INTEGER PRIMARY KEY NOT NULL
@@ -97,6 +128,13 @@ ContractHistId INTEGER PRIMARY KEY NOT NULL
 ,ValidUntilDate DATETIME
 );
 
+-- Create draft picks table.
+-- This table houses the rookie draft picks. 
+-- Draft picks are required to have a team, a year, and a round.
+-- To allow picks to exist for the future, exact overall draft numbers are not required.
+-- In addition, players are not required for the same reason. 
+-- Draft picks have foreign key relationships to the teams and player tables. 
+
 CREATE TABLE dbo.DraftPicks
 (
 DraftPickId INTEGER PRIMARY KEY NOT NULL
@@ -111,6 +149,9 @@ DraftPickId INTEGER PRIMARY KEY NOT NULL
 ,CONSTRAINT Selection CHECK (Selection <= 12 AND Selection >= 1)
 );
 
+-- Create draft pick history table.
+-- This table allows us to view who owned what draft picks over time. 
+
 CREATE TABLE dbo.DraftPicksHist
 (
  DraftPicksHistId INTEGER PRIMARY KEY NOT NULL
@@ -124,6 +165,10 @@ CREATE TABLE dbo.DraftPicksHist
 ,ActionDate DATETIME NOT NULL
 ,ValidUntilDate DATETIME 
 );
+
+-- Create Player table. 
+-- This table houses the players themselves. 
+-- In the future, columns will be added for ID numbers from various data sources, such as ESPN and Sleeper. 
 
 CREATE TABLE dbo.Player 
 (
