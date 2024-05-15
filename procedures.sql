@@ -38,3 +38,24 @@ BEGIN
 INSERT INTO dbo.Contract (ContractTypeId, TeamId, PlayerId, Year1Value, Year2Value, Year3Value, Year4Value)
 VALUES (@ContractTypeId, @TeamId, @PlayerId, @Year1Value, @Year2Value, @Year3Value, @Year4Value)
 END;
+
+-- Create procedure to import players from the stage table
+CREATE OR ALTER PROCEDURE dbo.Import_Players
+AS BEGIN
+INSERT INTO dbo.Player (FirstName, LastName, Suffix, Position, NFLTeam)
+SELECT
+ x.FirstName
+,x.LastName
+,x.Suffix
+,x.Position
+,x.NFLTeam
+FROM dbo.Player_Stage as x
+WHERE NOT EXISTS (select 1 from dbo.Player as p
+                 WHERE x.FirstName = p.FirstName
+                 AND x.LastName = p.LastName
+                 AND ISNULL(x.Suffix,'') = ISNULL(p.Suffix,'')
+                 AND ISNULL(x.Position,'') = ISNULL(p.Position,'')
+                 AND ISNULL(x.NFLTeam,'') = ISNULL(p.NFLTeam,'')
+                 );
+TRUNCATE TABLE dbo.Player_Stage;
+END;
