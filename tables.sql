@@ -179,3 +179,15 @@ CREATE TABLE dbo.Player
 ,Position varchar(3) NOT NULL
 ,NFLTeam varchar(100)
 );
+
+-- Create player staging table 
+-- When a list of players is imported, it sits in this table before being imported to the main table
+-- De-duplication will occur before players are inserted into the main table.
+CREATE TABLE dbo.Player_Stage
+(
+ FirstName varchar(100) NOT NULL
+,LastName varchar(100) NOT NULL
+,Suffix varchar(10) 
+,Position varchar(3) NOT NULL
+,NFLTeam varchar(100)
+ );
